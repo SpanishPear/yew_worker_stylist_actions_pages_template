@@ -1,0 +1,37 @@
+name: Publish gh pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    # configure the environment
+    - uses: actions/checkout@v3
+    
+    - name: rust-toolchain
+      uses: actions-rs/toolchain@v1.0.6
+      with:
+        toolchain: stable
+        target: wasm32-unknown-unknown
+    
+    - name: trunk-action
+      uses: jetli/trunk-action@v0.1.0
+
+    - name: run trunk
+      # If you want to serve this as your main github page, remove public url 
+      run: trunk build --release --public-url='/${{ github.repository }}/'
+
+    - name: GitHub Pages action
+      uses: peaceiris/actions-gh-pages@v3.7.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./dist
+        force_orphan: true
+        # if you are serving at a custom URL, add a cname
+        # cname: my.domain

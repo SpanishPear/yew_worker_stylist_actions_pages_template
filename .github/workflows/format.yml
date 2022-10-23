@@ -1,0 +1,33 @@
+# rustfmt all updates to main, or pul requests
+name: Format  
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rustfmt:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          profile: minimal
+          components: rustfmt
+
+      - name: RustFormat 
+        uses: mbrobbel/rustfmt-check@0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
