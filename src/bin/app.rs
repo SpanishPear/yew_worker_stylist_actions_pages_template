@@ -2,9 +2,9 @@
 #![allow(clippy::let_unit_value)]
 
 use bounce::BounceRoot;
-use mipsy_web::components::app::App;
 use stylist::yew::*;
 use yew::prelude::*;
+use yew_stylist_actions_worker_template::components::app::App;
 
 #[styled_component(AppRoot)]
 fn app() -> Html {
